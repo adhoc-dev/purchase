@@ -2,12 +2,15 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, fields, api, _
+import json
+import logging
+
+from lxml import etree
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_compare, float_is_zero
-import json
-from lxml import etree
-import logging
+
 _logger = logging.getLogger(__name__)
 
 
@@ -224,11 +227,6 @@ class PurchaseOrderLine(models.Model):
                 line.invoice_status = 'no'
 
 
-    @api.model
-    def _prepare_purchase_order_line(self, product_id, product_qty, product_uom, company_id, supplier, po):
-        res = super()._prepare_purchase_order_line(product_id, product_qty, product_uom, company_id, supplier, po)
-        # copy user_id from replenishment to purchase order
-        # Solo asignar user_id si NO viene de una venta (no hay 'origins' en context)
-        if "origins" not in self._context and not po.user_id:
-            po.user_id = self.env.user
-        return res
+
+    # Método _prepare_purchase_order_line removido
+    # La lógica de asignación de usuario se maneja ahora en stock_rule.py
