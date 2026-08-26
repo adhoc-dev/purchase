@@ -19,6 +19,12 @@ On purchase order type:
 #. Adds to the purchase order type the report partner, the project, the billing journal and the billing policy.
 #. Adds a per-type "Lock on Confirmation" flag that locks orders of that type when they are approved. It is
    additive to the global "Lock Confirmed Orders" setting, which always prevails.
+#. When the company of an order that is not confirmed yet changes, its fiscal position and the taxes of its
+   lines are recomputed for the new company. Natively that only happens through ``onchange_partner_id``, which
+   fires only with the form open, so changing the company any other way left the fiscal position and the taxes
+   of the previous company -in Argentina, the withholdings missing from the bill- and purchase has no "Update
+   Taxes" button to fall back on. The order type's fiscal position keeps winning while the new company can use
+   it. Known limitation: a line with no product whose account carries no default taxes keeps the previous taxes.
 
 Installation
 ============
